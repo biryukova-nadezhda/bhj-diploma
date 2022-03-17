@@ -28,7 +28,10 @@ class Modal {
     registerEvents() {
         let arrayClose = Array.from(this.element.querySelectorAll("dataAtr"));
         arrayClose.forEach((item) => {
-            item.addEventListener("click", this.onClose());
+            item.addEventListener("click", (event) => {
+                event.preventDefault();
+                this.onClose(this.element);
+            });
         })
     }
 
