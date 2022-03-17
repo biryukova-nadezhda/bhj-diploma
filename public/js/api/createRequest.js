@@ -1,39 +1,55 @@
-const { options } = require("nodemon/lib/config");
+//const { options } = require("nodemon/lib/config");
 
 /**
  * Основная функция для совершения запросов
  * на сервер.
  * */
+
 const createRequest = (options = {}) => {
     const xhr = new XMLHttpRequest();
     xhr.responseType = "json";
 
-    if (options.method === "GET") {
-        let adress = `${options.url}?mail=${options.data.mail}&password=${options.data.password}`;
+    let { url, method, data, callback } = options;
 
-        try {
-            xhr.open("GET", adress);
-            xhr.send();
-            check(xhr, options);
+    if (method === "GET") {
+        url += "?";
 
-        } catch (e) {
-            options.callback(e, xhr.response);
+        /*for (let key of Object.keys(data)) {
+            url += `${key}=${data.key}&`;
+        }*/
+
+        for (let key in data) {
+            url += `${key}=${data[key]}&`;
         }
 
     } else {
         const formData = new FormData();
-        formData.append("mail", `${options.data.mail}`);
-        formData.append("password", `${options.data.password}`);
 
-        xhr.open(`${options.method}`, `${options.url}`);
-        xhr.send(formData);
+        /*for (let key of Object.keys(data)) {
+            formData.append(key, data.key);
+        }*/
 
-        check(xhr, options);
+        for (let key in data) {
+            formData.append(key, data[key]);
+        }
     }
-};
 
-function check(xhr, options) {
-    if (xhr.readyState === xhr.DONE) {
-        options.callback(null, xhr.response);
+    try {
+        xhr.open(method, url);
+
+        if (method === "GET") {
+            xhr.send();
+        } else {
+            xhr.send(formData);
+        }
+    } catch (e) {
+        callback(e);
     }
+
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === xhr.DONE) {
+            callback(null, xhr.response);
+        }
+    }
+
 }
