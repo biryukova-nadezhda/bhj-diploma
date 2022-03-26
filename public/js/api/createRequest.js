@@ -14,20 +14,12 @@ const createRequest = (options = {}) => {
     if (method === "GET") {
         url += "?";
 
-        /*for (let key of Object.keys(data)) {
-            url += `${key}=${data.key}&`;
-        }*/
-
         for (let key in data) {
             url += `${key}=${data[key]}&`;
         }
 
     } else {
         const formData = new FormData();
-
-        /*for (let key of Object.keys(data)) {
-            formData.append(key, data.key);
-        }*/
 
         for (let key in data) {
             formData.append(key, data[key]);
@@ -42,8 +34,8 @@ const createRequest = (options = {}) => {
         } else {
             xhr.send(formData);
         }
-    } catch (e) {
-        callback(e);
+    } catch (error) {
+        callback(error);
     }
 
     xhr.onreadystatechange = () => {

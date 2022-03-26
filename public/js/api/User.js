@@ -30,7 +30,7 @@ class User {
         try {
             return JSON.parse(localStorage.getItem("user"));
         } catch {
-            return undefined
+            return
         }
     }
 
@@ -43,7 +43,7 @@ class User {
             method: "GET",
             url: this.URL + "/current",
             callback: (error, response) => {
-                if (response.success === true) {
+                if (response && response.user) {
                     this.setCurrent(response.user);
                 } else {
                     this.unsetCurrent();
@@ -66,11 +66,11 @@ class User {
             method: 'POST',
             url: this.URL + '/login',
             data,
-            callback: (err, response) => {
+            callback: (error, response) => {
                 if (response && response.user) {
                     this.setCurrent(response.user);
                 }
-                callback(err, response);
+                callback(error, response);
             }
         });
     }
@@ -86,11 +86,11 @@ class User {
             method: 'POST',
             url: this.URL + '/register',
             data,
-            callback: (err, response) => {
+            callback: (error, response) => {
                 if (response && response.user) {
                     this.setCurrent(response.user);
                 }
-                callback(err, response);
+                callback(error, response);
             }
         });
     }
@@ -103,11 +103,11 @@ class User {
         createRequest({
             method: 'POST',
             url: this.URL + '/logout',
-            callback: (err, response) => {
-                if (response && response.user) {
+            callback: (error, response) => {
+                if (response && response.success) {
                     this.unsetCurrent();
                 }
-                callback(err, response);
+                callback(error, response);
             }
         });
     }
