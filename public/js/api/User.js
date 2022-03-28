@@ -45,13 +45,10 @@ class User {
             callback: (error, response) => {
                 if (response && response.user) {
                     this.setCurrent(response.user);
-                } else {
-                    this.unsetCurrent();
                 }
                 callback(error, response);
             }
         }
-
         createRequest(obj);
     }
 

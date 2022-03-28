@@ -50,7 +50,12 @@ class Sidebar {
 
         logoutButton.addEventListener("click", (e) => {
             e.preventDefault();
-            User.logout();
+            let callback = function(error, response) {
+                if (response && response.success) {
+                    App.setState("init");
+                }
+            };
+            User.logout(callback);
         });
     }
 }

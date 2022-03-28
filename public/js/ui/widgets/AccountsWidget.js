@@ -32,21 +32,20 @@ class AccountsWidget {
      * */
 
     registerEvents() {
-        let buttonCreate = document.querySelector(".create-account");
-        buttonCreate.addEventListener("click", (e) => {
+        this.element.addEventListener('click', (e) => {
             e.preventDefault();
 
-            App.getModal("createAccount").open();
+            let createAccount = e.target.closest('.create-account');
+            let accountEl = e.target.closest('.account');
+
+            if (createAccount) {
+                App.getModal('createAccount').open();
+            }
+
+            if (accountEl) {
+                this.onSelectAccount(accountEl);
+            }
         });
-
-        let existingAccount = Array.from(document.querySelectorAll(".account"));
-        existingAccount.forEach((item) => {
-            item.addEventListener("click", (e) => {
-                e.preventDefault();
-
-                this.onSelectAccount(e.target.closest(".account"));
-            })
-        })
     }
 
     /**
@@ -81,7 +80,7 @@ class AccountsWidget {
      * в боковой колонке
      * */
     clear() {
-        let existingAccount = Array.from(document.querySelectorAll(".account"));
+        let existingAccount = Array.from(this.element.querySelectorAll(".account"));
         existingAccount.forEach((item) => {
             item.remove();
         })
@@ -96,10 +95,9 @@ class AccountsWidget {
      * */
     onSelectAccount(element) {
         let existingAccount = Array.from(document.querySelectorAll(".account"));
+
         existingAccount.forEach((item) => {
-            if (item.classList.includes("active")) {
-                item.classList.remove("active");
-            }
+            item.classList.remove("active");
         })
 
         element.classList.add("active");

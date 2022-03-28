@@ -14,8 +14,8 @@ class Entity {
         let obj = {
             method: "GET",
             url: this.URL,
-            data: data,
-            callback: callback
+            data,
+            callback
         }
 
         createRequest(obj);
@@ -30,8 +30,8 @@ class Entity {
         let obj = {
             method: "PUT",
             url: this.URL,
-            data: data,
-            callback: callback
+            data,
+            callback
         }
 
         createRequest(obj);
@@ -46,8 +46,8 @@ class Entity {
         let obj = {
             method: "DELETE",
             url: this.URL,
-            data: data,
-            callback: callback
+            data,
+            callback
         }
 
         createRequest(obj);
